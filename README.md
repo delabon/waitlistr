@@ -9,7 +9,7 @@ Think of **Waitlistr** as the foundation for your next SaaS platform.
 - PHP 8.4 & Laravel 12
 - Web Components: Tailwind 4, Vue 3, Inertia 2, Vite
 - DBs: MySQL 8, Redis (Cache & Queues)
-- Testing: Pest
+- Testing: Pest 4
 - CI: GitHub Actions
 - Code Quality: Pint, LaraStan(PHPStan)
 - Dev tools: Sail (Docker), Telescope, Horizon
