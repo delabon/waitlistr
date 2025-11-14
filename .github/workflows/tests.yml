@@ -25,6 +25,13 @@ jobs:
           tools: composer:v2
           coverage: xdebug
 
+      - name: Setup MySQL
+        uses: shakurov/actions-setup-mysql@v1
+        with:
+          mysql-version: '8.0'
+          mysql-root-password: ''
+          mysql-database: 'testing'
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
