@@ -21,3 +21,5 @@ Think of **Waitlistr** as the foundation for your next SaaS platform.
 ### Why and How
 
 In your Laravel Conventions guide, you said to use modules pattern when you have > 100 models. So in this project I'll not use modules, just to keep it simple.
+
+For user roles I could've used the Spatie Permissions package, but for the sake of simplicity, I just added a role field to the users table with a UserRole enum (Admin or User for now).
