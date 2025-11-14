@@ -41,7 +41,7 @@ final class UserFactory extends Factory
     /**
      * Indicate that the model's email address should be unverified.
      */
-    public function unverified(): static
+    public function unverified(): self
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
@@ -51,7 +51,7 @@ final class UserFactory extends Factory
     /**
      * Indicate that the model does not have two-factor authentication configured.
      */
-    public function withoutTwoFactor(): static
+    public function withoutTwoFactor(): self
     {
         return $this->state(fn (array $attributes) => [
             'two_factor_secret' => null,
@@ -60,14 +60,14 @@ final class UserFactory extends Factory
         ]);
     }
 
-    public function admin(): static
+    public function admin(): self
     {
         return $this->state(fn (array $attributes) => [
             'role' => UserRole::Admin->value,
         ]);
     }
 
-    public function user(): static
+    public function user(): self
     {
         return $this->state(fn (array $attributes) => [
             'role' => UserRole::User->value,
