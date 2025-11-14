@@ -38,12 +38,13 @@ final class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        /** @phpstan-ignore-next-line */
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
         return [
             ...parent::share($request),
             'name' => config('app.name'),
-            'quote' => ['message' => mb_trim($message), 'author' => mb_trim($author)],
+            'quote' => ['message' => mb_trim((string) $message), 'author' => mb_trim((string) $author)],
             'auth' => [
                 'user' => $request->user(),
             ],

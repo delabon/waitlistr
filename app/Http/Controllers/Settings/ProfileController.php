@@ -21,6 +21,7 @@ final class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         return Inertia::render('settings/Profile', [
+            /** @phpstan-ignore-next-line  */
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
         ]);
@@ -31,12 +32,16 @@ final class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        /** @phpstan-ignore method.nonObject */
         $request->user()->fill($request->validated());
 
+        /** @phpstan-ignore method.nonObject */
         if ($request->user()->isDirty('email')) {
+            /** @phpstan-ignore property.nonObject */
             $request->user()->email_verified_at = null;
         }
 
+        /** @phpstan-ignore method.nonObject */
         $request->user()->save();
 
         return to_route('profile.edit');
@@ -55,6 +60,7 @@ final class ProfileController extends Controller
 
         Auth::logout();
 
+        /** @phpstan-ignore method.nonObject */
         $user->delete();
 
         $request->session()->invalidate();

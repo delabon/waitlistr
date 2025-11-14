@@ -31,7 +31,9 @@ final class PasswordController extends Controller
             'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 
+        /** @phpstan-ignore method.nonObject */
         $request->user()->update([
+            /** @phpstan-ignore offsetAccess.nonOffsetAccessible */
             'password' => $validated['password'],
         ]);
 

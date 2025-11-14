@@ -11,7 +11,7 @@ Think of **Waitlistr** as the foundation for your next SaaS platform.
 - DBs: MySQL 8, Redis (Cache & Queues)
 - Testing: Pest 4
 - CI: GitHub Actions
-- Code Quality: Pint, LaraStan(PHPStan)
+- Code Quality: Pint, LaraStan(PHPStan - Level Max)
 - Dev tools: Sail (Docker), Telescope, Horizon
 
 ### Installation
