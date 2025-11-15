@@ -13,8 +13,6 @@ use Illuminate\Support\Carbon;
 final class WaitlistSignupFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
     public function definition(): array
@@ -30,7 +28,7 @@ final class WaitlistSignupFactory extends Factory
     public function welcomeEmailSentAt(?Carbon $date = null): self
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => $date ?? $this->faker->dateTimeBetween('-2 years'),
+            'welcome_email_sent_at' => $date ?? $this->faker->dateTimeBetween('-2 years'),
         ]);
     }
 }
