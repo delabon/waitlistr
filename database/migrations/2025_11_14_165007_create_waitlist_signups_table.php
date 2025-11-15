@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('waitlist_signups', function (Blueprint $table) {
             $table->id();
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->boolean('welcome_email_sent_at')->nullable();
+            $table->timestamp('welcome_email_sent_at')->nullable();
             $table->timestamps();
         });
     }
