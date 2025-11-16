@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\DTOs\WaitlistSignups\WaitlistSignupDTO $dto
+ */
+?>
 <div>
     Hi {{ $dto->firstName }} {{ $dto->lastName }},
     <p>Thank you for signing up to the waitlist. We will get back to you soon.</p>
