@@ -18,12 +18,19 @@ final readonly class WaitlistSignupDTO
     public static function fromRequest(StoreWaitlistSignupRequest $request): self
     {
         return new self(
-            firstName: $request->input('firstName'),
-            lastName: $request->input('lastName'),
-            email: $request->string('email')->toString()
+            firstName: $request->input('firstName')
+                ? $request->string('firstName')->value()
+                : null,
+            lastName: $request->input('lastName')
+                ? $request->string('lastName')->value()
+                : null,
+            email: $request->string('email')->value()
         );
     }
 
+    /**
+     * @return array<string, ?string>
+     */
     public function toArray(): array
     {
         return [
