@@ -235,4 +235,3 @@ test('multiple users can signup with different emails', function () {
         return $mail->dto->email === 'second@example.com';
     });
 });
-

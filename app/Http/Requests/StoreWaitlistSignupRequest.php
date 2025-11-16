@@ -23,18 +23,18 @@ final class StoreWaitlistSignupRequest extends FormRequest
                 'nullable',
                 'string',
                 'min:2',
-                'max:255'
+                'max:255',
             ],
             'lastName' => [
                 'nullable',
                 'string',
                 'min:2',
-                'max:255'
+                'max:255',
             ],
             'email' => [
                 'required',
                 'email',
-                'unique:waitlist_signups,email'
+                'unique:waitlist_signups,email',
             ],
         ];
     }

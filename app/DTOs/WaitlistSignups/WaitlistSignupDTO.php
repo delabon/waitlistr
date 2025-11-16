@@ -12,8 +12,7 @@ final readonly class WaitlistSignupDTO
         public ?string $firstName,
         public ?string $lastName,
         public string $email
-    ) {
-    }
+    ) {}
 
     public static function fromRequest(StoreWaitlistSignupRequest $request): self
     {

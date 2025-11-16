@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\WaitlistSignup;
+
 use function Pest\Laravel\assertDatabaseHas;
 
 test('guest can see waitlist signup form', function () {
@@ -113,7 +114,6 @@ test('form clears after successful submission', function () {
         ->assertDontSeeIn('[name="firstName"]', 'Test')
         ->assertDontSeeIn('[name="lastName"]', 'User')
         ->assertDontSeeIn('[name="email"]', 'test.user@example.com');
-
 
     assertDatabaseHas('waitlist_signups', [
         'email' => 'test.user@example.com',

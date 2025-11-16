@@ -21,8 +21,7 @@ final class WaitlistSignupWelcomeMail extends Mailable implements ShouldQueue
      */
     public function __construct(
         public readonly WaitlistSignupDTO $dto
-    ) {
-    }
+    ) {}
 
     /**
      * Get the message envelope.
@@ -42,8 +41,8 @@ final class WaitlistSignupWelcomeMail extends Mailable implements ShouldQueue
         return new Content(
             view: 'mail.waitlist-signup-welcome-mail',
             with: [
-                'dto' => $this->dto
-            ]
+                'dto' => $this->dto,
+            ],
         );
     }
 
