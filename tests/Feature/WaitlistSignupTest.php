@@ -3,8 +3,9 @@
 declare(strict_types=1);
 
 use App\Mail\WaitlistSignupWelcomeMail;
-use App\Models\User;
 use App\Models\WaitlistSignup;
+use Database\Factories\UserFactory;
+use Database\Factories\WaitlistSignupFactory;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Testing\AssertableInertia;
 
@@ -105,7 +106,7 @@ test('email must be valid format', function () {
 test('email must be unique', function () {
     Mail::fake();
 
-    WaitlistSignup::factory()->create([
+    WaitlistSignupFactory::new()->create([
         'email' => 'existing@example.com',
     ]);
 
@@ -183,7 +184,7 @@ test('last name cannot exceed 255 characters', function () {
 test('authenticated user can also signup for waitlist', function () {
     Mail::fake();
 
-    $user = User::factory()->create([
+    $user = UserFactory::new()->create([
         'email' => 'authenticated@example.com',
     ]);
 

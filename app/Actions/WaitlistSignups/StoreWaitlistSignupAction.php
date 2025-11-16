@@ -13,6 +13,8 @@ final class StoreWaitlistSignupAction
 {
     public function __invoke(WaitlistSignupDTO $dto): WaitlistSignup
     {
+        // Mass assignment here is good because
+        // we're using a DTO not like we're getting things from a request (Bypassing one of your Laravel Convention)
         $waitlistSignup = WaitlistSignup::create($dto->toArray());
 
         Mail::to($dto->email)

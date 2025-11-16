@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\WaitlistSignup;
-
+use Database\Factories\WaitlistSignupFactory;
 use function Pest\Laravel\assertDatabaseHas;
 
 test('guest can see waitlist signup form', function () {
@@ -88,7 +88,7 @@ test('form shows validation error for invalid email format', function () {
 });
 
 test('form shows validation error for duplicate email', function () {
-    WaitlistSignup::factory()->create([
+    WaitlistSignupFactory::new()->create([
         'email' => 'duplicate@example.com',
     ]);
 
