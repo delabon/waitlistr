@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
+use Database\Factories\UserFactory;
 
 test('guests are redirected to the login page', function () {
     $response = $this->get(route('dashboard'));
@@ -10,7 +10,7 @@ test('guests are redirected to the login page', function () {
 });
 
 test('authenticated users can visit the dashboard', function () {
-    $user = User::factory()->create();
+    $user = UserFactory::new()->create();
     $this->actingAs($user);
 
     $response = $this->get(route('dashboard'));

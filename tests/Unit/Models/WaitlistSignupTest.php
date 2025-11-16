@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Models\WaitlistSignup;
+use Database\Factories\WaitlistSignupFactory;
 
 test('to array', function () {
-    $waitlistSignup = WaitlistSignup::factory()->create();
+    $waitlistSignup = WaitlistSignupFactory::new()->create();
 
     expect($waitlistSignup->refresh()->toArray())->toHaveKeys([
         'email',
