@@ -29,7 +29,7 @@ defineProps({
             class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
         >
             <div class="mt-3 relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
-                <table class="w-full text-sm text-left rtl:text-right text-body">
+                <table class="w-full min-w-6xl text-sm text-left rtl:text-right text-body table-fixed">
                     <thead class="bg-neutral-secondary-soft border-b rounded-base border-default">
                     <tr>
                         <th scope="col" class="px-6 py-3 font-bold w-8">
