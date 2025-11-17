@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Enums\UserRole;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Seeder;
 
 final class DatabaseSeeder extends Seeder
@@ -15,11 +16,17 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
+        UserFactory::new()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'test@test.com',
+            'password' => '12345678'
+        ]);
+
+        UserFactory::new()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@test.com',
+            'password' => '12345678',
+            'role' => UserRole::Admin,
         ]);
     }
 }
