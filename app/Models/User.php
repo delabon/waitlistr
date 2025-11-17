@@ -37,6 +37,12 @@ final class User extends Authenticatable
         'remember_token',
     ];
 
+    public function isAdmin(): bool
+    {
+        /** @phpstan-ignore identical.alwaysFalse */
+        return $this->role === UserRole::Admin;
+    }
+
     /**
      * Get the attributes that should be cast.
      *

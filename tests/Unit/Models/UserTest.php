@@ -18,3 +18,15 @@ test('to array', function () {
         'role',
     ]);
 });
+
+test('is admin return true when admin', function () {
+    $user = UserFactory::new()->admin()->make(); // No need for DB insert here
+
+    expect($user->isAdmin())->toBeTrue();
+});
+
+test('is admin return false when regular user', function () {
+    $user = UserFactory::new()->user()->make(); // No need for DB insert here
+
+    expect($user->isAdmin())->toBeFalse();
+});
