@@ -12,7 +12,6 @@ test('to array', function () {
         'name',
         'email',
         'email_verified_at',
-        'two_factor_confirmed_at',
         'created_at',
         'updated_at',
         'role',
