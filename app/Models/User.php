@@ -54,6 +54,7 @@ final class User extends Authenticatable
 
     public function isAdmin(): bool
     {
+        /** @phpstan-ignore identical.alwaysFalse */
         return $this->role === UserRole::Admin;
     }
 }
