@@ -20,10 +20,6 @@ const sidebarNavItems: NavItem[] = [
         href: editPassword(),
     },
     {
-        title: 'Two-Factor Auth',
-        href: show(),
-    },
-    {
         title: 'Appearance',
         href: editAppearance(),
     },
