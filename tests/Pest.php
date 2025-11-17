@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Models\User;
+use Pest\Browser\Api\ArrayablePendingAwaitablePage;
+use Pest\Browser\Api\AwaitableWebpage;
+use Pest\Browser\Api\PendingAwaitablePage;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -43,7 +48,11 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function browserLogin(User $user): ArrayablePendingAwaitablePage|PendingAwaitablePage|AwaitableWebpage
 {
-    // ..
+    return visit('/login')
+        ->type('[name="email"]', $user->email)
+        ->type('[name="password"]', 'password')
+        ->press('Log in')
+        ->wait(2);
 }

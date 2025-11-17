@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 final class WaitlistSignup extends Model
 {
-    private const string DATETIME_FORMAT = 'M j, Y - h:i A';
+    public const string DATETIME_FORMAT = 'M j, Y - h:i A';
 
     protected $fillable = [
         'email',
