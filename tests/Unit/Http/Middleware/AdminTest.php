@@ -6,14 +6,15 @@ use App\Http\Middleware\Admin;
 use Database\Factories\UserFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 it('throws an HttpException when no signed-in user', function () {
     $adminMiddleware = new Admin();
     $request = new Request();
     $request->setUserResolver(static fn () => null);
 
-    expect(fn() => $adminMiddleware->handle($request, static fn () => null))
-        ->toThrow(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+    expect(fn () => $adminMiddleware->handle($request, static fn () => null))
+        ->toThrow(HttpException::class);
 });
 
 it('throws an HttpException when the signed-in user is not an admin', function () {
@@ -22,8 +23,8 @@ it('throws an HttpException when the signed-in user is not an admin', function (
     $request = new Request();
     $request->setUserResolver(static fn () => $user);
 
-    expect(fn() => $adminMiddleware->handle($request, static fn () => null))
-        ->toThrow(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+    expect(fn () => $adminMiddleware->handle($request, static fn () => null))
+        ->toThrow(HttpException::class);
 });
 
 it('passes the admin middleware successfully when the signed-in user is an admin', function () {

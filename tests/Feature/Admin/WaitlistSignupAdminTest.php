@@ -259,4 +259,3 @@ test('admin page includes all required resource fields', function () {
         ->has('waitlistSignups.data.0.formatted_welcome_email_sent_at')
     );
 });
-

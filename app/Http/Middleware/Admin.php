@@ -13,11 +13,11 @@ final class Admin
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        abort_if(!($request->user()?->isAdmin() ?? false), Response::HTTP_FORBIDDEN);
+        abort_if(! ($request->user()?->isAdmin() ?? false), Response::HTTP_FORBIDDEN);
 
         return $next($request);
     }

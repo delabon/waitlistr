@@ -19,7 +19,7 @@ final class DatabaseSeeder extends Seeder
         UserFactory::new()->create([
             'name' => 'Test User',
             'email' => 'test@test.com',
-            'password' => '12345678'
+            'password' => '12345678',
         ]);
 
         UserFactory::new()->create([

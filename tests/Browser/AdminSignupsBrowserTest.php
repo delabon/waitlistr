@@ -90,8 +90,8 @@ test('admin sees newest signups first', function () {
 
     $pageContent = $page->content();
 
-    $newPosition = strpos($pageContent, 'new@example.com');
-    $oldPosition = strpos($pageContent, 'old@example.com');
+    $newPosition = mb_strpos($pageContent, 'new@example.com');
+    $oldPosition = mb_strpos($pageContent, 'old@example.com');
 
     expect($newPosition)->toBeLessThan($oldPosition);
 });
@@ -262,4 +262,3 @@ test('admin signups page breadcrumb shows correct navigation path', function () 
 
     $page->assertSee('Signups');
 });
-

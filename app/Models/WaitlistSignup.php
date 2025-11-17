@@ -23,7 +23,7 @@ final class WaitlistSignup extends Model
 
     public function getFormattedCreatedAtAttribute(): string
     {
-        if (!$this->created_at) {
+        if (! $this->created_at) {
             return '';
         }
 
@@ -32,7 +32,7 @@ final class WaitlistSignup extends Model
 
     public function getFormattedWelcomeEmailSentAtAttribute(): string
     {
-        if (!$this->welcome_email_sent_at) {
+        if (! $this->welcome_email_sent_at) {
             return '';
         }
 

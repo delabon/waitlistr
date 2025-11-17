@@ -76,4 +76,3 @@ test('resource collection transforms multiple signups correctly', function () {
         ->and($array[2])->toHaveKey('id')
         ->and($array[2])->toHaveKey('email');
 });
-
