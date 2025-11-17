@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\WaitlistSignupController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [WaitlistSignupController::class, 'create'])
     ->middleware(['guest'])
@@ -12,9 +11,14 @@ Route::get('/', [WaitlistSignupController::class, 'create'])
 Route::post('/waitlist-signups', [WaitlistSignupController::class, 'store'])
     ->name('waitlistSignups.store');
 
-// TODO: Move the starter kit code to a dedicated controller
-Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::prefix('/dashboard')->group(function () {
+    Route::inertia('/', 'dashboard/Dashboard')
+        ->middleware(['auth', 'verified'])
+        ->name('dashboard');
+
+    Route::get('/admin/signups', [WaitlistSignupController::class, 'index'])
+        ->middleware(['auth', 'verified', 'admin'])
+        ->name('dashboard.admin.signups');
+});
 
 require __DIR__.'/settings.php';
