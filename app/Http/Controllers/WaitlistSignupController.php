@@ -8,6 +8,7 @@ use App\Actions\WaitlistSignups\GetWaitlistSignupsAction;
 use App\Actions\WaitlistSignups\StoreWaitlistSignupAction;
 use App\DTOs\WaitlistSignups\WaitlistSignupDTO;
 use App\Http\Requests\StoreWaitlistSignupRequest;
+use App\Http\Resources\WaitlistSignupResource;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,8 +19,10 @@ final class WaitlistSignupController extends Controller
 
     public function index(GetWaitlistSignupsAction $action): Response
     {
+        $waitlistSignups = $action(self::MAX_ITEMS_PER_PAGE);
+
         return Inertia::render('dashboard/admin/Signups', [
-            'waitlistSignups' => $action(self::MAX_ITEMS_PER_PAGE),
+            'waitlistSignups' => WaitlistSignupResource::collection($waitlistSignups),
         ]);
     }
 

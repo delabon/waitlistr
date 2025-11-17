@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Actions\WaitlistSignups;
 
-use App\Http\Resources\WaitlistSignupResource;
 use App\Models\WaitlistSignup;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 final class GetWaitlistSignupsAction
 {
-    public function __invoke(int $maxItemsPerPage = 10): AnonymousResourceCollection
+    public function __invoke(int $maxItemsPerPage = 10): LengthAwarePaginator
     {
-        $waitlistSignups = WaitlistSignup::query()->latest('id')->paginate($maxItemsPerPage);
-
-        return WaitlistSignupResource::collection($waitlistSignups);
+        return WaitlistSignup::query()->latest('id')->paginate($maxItemsPerPage);
     }
 }
