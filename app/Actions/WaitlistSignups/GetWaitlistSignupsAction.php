@@ -9,6 +9,9 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 final class GetWaitlistSignupsAction
 {
+    /**
+     * @return LengthAwarePaginator<int, WaitlistSignup>
+     */
     public function __invoke(int $maxItemsPerPage = 10): LengthAwarePaginator
     {
         return WaitlistSignup::query()->latest('id')->paginate($maxItemsPerPage);
