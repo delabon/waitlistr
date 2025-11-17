@@ -16,10 +16,9 @@ defineProps({
             <Link
                 preserve-scroll
                 :href="link.url ?? ''"
-                v-html="link.label"
                 class="flex items-center justify-center px-3 py-2 text-sm rounded-lg text-gray-600"
                 :class="{ 'bg-gray-200': link.active, '!text-gray-300': !link.url }"
-            />
+            ><span v-html="link.label"></span></Link>
         </template>
     </nav>
 </template>
