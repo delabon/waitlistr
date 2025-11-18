@@ -6,13 +6,12 @@ namespace App\Mail;
 
 use App\DTOs\WaitlistSignups\WaitlistSignupDTO;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-final class WaitlistSignupWelcomeMail extends Mailable implements ShouldQueue
+final class WaitlistSignupWelcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
