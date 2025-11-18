@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Jobs\SendWaitlistWelcomeEmailJob;
 use App\Mail\WaitlistSignupWelcomeMail;
 use App\Models\WaitlistSignup;
 use Database\Factories\UserFactory;
 use Database\Factories\WaitlistSignupFactory;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
 use Inertia\Testing\AssertableInertia;
 
 test('waitlist signup page can be rendered', function () {
@@ -17,7 +19,7 @@ test('waitlist signup page can be rendered', function () {
 });
 
 test('guest can signup for waitlist with all fields', function () {
-    Mail::fake();
+    Queue::fake();
 
     $response = $this->post(route('waitlistSignups.store'), [
         'firstName' => 'John',
@@ -41,15 +43,16 @@ test('guest can signup for waitlist with all fields', function () {
     expect($signup->last_name)->toBe('Doe');
     expect($signup->welcome_email_sent_at)->toBeNull();
 
-    Mail::assertQueued(WaitlistSignupWelcomeMail::class, function ($mail) {
-        return $mail->dto->email === 'john.doe@example.com'
-            && $mail->dto->firstName === 'John'
-            && $mail->dto->lastName === 'Doe';
+    Queue::assertPushed(SendWaitlistWelcomeEmailJob::class, function ($job) use ($signup) {
+        return $job->waitlistSignup->id === $signup->id
+            && $job->waitlistSignup->email === 'john.doe@example.com'
+            && $job->waitlistSignup->first_name === 'John'
+            && $job->waitlistSignup->last_name === 'Doe';
     });
 });
 
 test('guest can signup for waitlist with only email', function () {
-    Mail::fake();
+    Queue::fake();
 
     $response = $this->post(route('waitlistSignups.store'), [
         'email' => 'minimal@example.com',
@@ -63,15 +66,18 @@ test('guest can signup for waitlist with only email', function () {
         'last_name' => null,
     ]);
 
-    Mail::assertQueued(WaitlistSignupWelcomeMail::class, function ($mail) {
-        return $mail->dto->email === 'minimal@example.com'
-            && $mail->dto->firstName === null
-            && $mail->dto->lastName === null;
+    $signup = WaitlistSignup::where('email', 'minimal@example.com')->first();
+
+    Queue::assertPushed(SendWaitlistWelcomeEmailJob::class, function ($job) use ($signup) {
+        return $job->waitlistSignup->id === $signup->id
+            && $job->waitlistSignup->email === 'minimal@example.com'
+            && $job->waitlistSignup->first_name === null
+            && $job->waitlistSignup->last_name === null;
     });
 });
 
 test('email is required for waitlist signup', function () {
-    Mail::fake();
+    Queue::fake();
 
     $response = $this->post(route('waitlistSignups.store'), [
         'firstName' => 'John',
@@ -84,11 +90,11 @@ test('email is required for waitlist signup', function () {
         'first_name' => 'John',
     ]);
 
-    Mail::assertNothingQueued();
+    Queue::assertNothingPushed();
 });
 
 test('email must be valid format', function () {
-    Mail::fake();
+    Queue::fake();
 
     $response = $this->post(route('waitlistSignups.store'), [
         'email' => 'not-an-email',
@@ -100,11 +106,11 @@ test('email must be valid format', function () {
         'email' => 'not-an-email',
     ]);
 
-    Mail::assertNothingQueued();
+    Queue::assertNothingPushed();
 });
 
 test('email must be unique', function () {
-    Mail::fake();
+    Queue::fake();
 
     WaitlistSignupFactory::new()->create([
         'email' => 'existing@example.com',
@@ -118,11 +124,11 @@ test('email must be unique', function () {
 
     expect(WaitlistSignup::where('email', 'existing@example.com')->count())->toBe(1);
 
-    Mail::assertNothingQueued();
+    Queue::assertNothingPushed();
 });
 
 test('first name must be at least 2 characters if provided', function () {
-    Mail::fake();
+    Queue::fake();
 
     $response = $this->post(route('waitlistSignups.store'), [
         'firstName' => 'J',
@@ -135,11 +141,11 @@ test('first name must be at least 2 characters if provided', function () {
         'email' => 'test@example.com',
     ]);
 
-    Mail::assertNothingQueued();
+    Queue::assertNothingPushed();
 });
 
 test('last name must be at least 2 characters if provided', function () {
-    Mail::fake();
+    Queue::fake();
 
     $response = $this->post(route('waitlistSignups.store'), [
         'lastName' => 'D',
@@ -152,11 +158,11 @@ test('last name must be at least 2 characters if provided', function () {
         'email' => 'test@example.com',
     ]);
 
-    Mail::assertNothingQueued();
+    Queue::assertNothingPushed();
 });
 
 test('first name cannot exceed 255 characters', function () {
-    Mail::fake();
+    Queue::fake();
 
     $response = $this->post(route('waitlistSignups.store'), [
         'firstName' => str_repeat('a', 256),
@@ -165,11 +171,11 @@ test('first name cannot exceed 255 characters', function () {
 
     $response->assertSessionHasErrors(['firstName']);
 
-    Mail::assertNothingQueued();
+    Queue::assertNothingPushed();
 });
 
 test('last name cannot exceed 255 characters', function () {
-    Mail::fake();
+    Queue::fake();
 
     $response = $this->post(route('waitlistSignups.store'), [
         'lastName' => str_repeat('a', 256),
@@ -178,11 +184,11 @@ test('last name cannot exceed 255 characters', function () {
 
     $response->assertSessionHasErrors(['lastName']);
 
-    Mail::assertNothingQueued();
+    Queue::assertNothingPushed();
 });
 
 test('authenticated user can also signup for waitlist', function () {
-    Mail::fake();
+    Queue::fake();
 
     $user = UserFactory::new()->create([
         'email' => 'authenticated@example.com',
@@ -202,15 +208,18 @@ test('authenticated user can also signup for waitlist', function () {
         'last_name' => 'User',
     ]);
 
-    Mail::assertQueued(WaitlistSignupWelcomeMail::class, function ($mail) {
-        return $mail->dto->email === 'waitlist@example.com'
-            && $mail->dto->firstName === 'Authenticated'
-            && $mail->dto->lastName === 'User';
+    $signup = WaitlistSignup::where('email', 'waitlist@example.com')->first();
+
+    Queue::assertPushed(SendWaitlistWelcomeEmailJob::class, function ($job) use ($signup) {
+        return $job->waitlistSignup->id === $signup->id
+            && $job->waitlistSignup->email === 'waitlist@example.com'
+            && $job->waitlistSignup->first_name === 'Authenticated'
+            && $job->waitlistSignup->last_name === 'User';
     });
 });
 
 test('multiple users can signup with different emails', function () {
-    Mail::fake();
+    Queue::fake();
 
     $firstSignup = $this->post(route('waitlistSignups.store'), [
         'email' => 'first@example.com',
@@ -229,10 +238,40 @@ test('multiple users can signup with different emails', function () {
     $this->assertDatabaseHas('waitlist_signups', ['email' => 'first@example.com']);
     $this->assertDatabaseHas('waitlist_signups', ['email' => 'second@example.com']);
 
-    Mail::assertQueued(WaitlistSignupWelcomeMail::class, function ($mail) {
-        return $mail->dto->email === 'first@example.com';
+    $firstSignupModel = WaitlistSignup::where('email', 'first@example.com')->first();
+    $secondSignupModel = WaitlistSignup::where('email', 'second@example.com')->first();
+
+    Queue::assertPushed(SendWaitlistWelcomeEmailJob::class, function ($job) use ($firstSignupModel) {
+        return $job->waitlistSignup->id === $firstSignupModel->id;
     });
-    Mail::assertQueued(WaitlistSignupWelcomeMail::class, function ($mail) {
-        return $mail->dto->email === 'second@example.com';
+    Queue::assertPushed(SendWaitlistWelcomeEmailJob::class, function ($job) use ($secondSignupModel) {
+        return $job->waitlistSignup->id === $secondSignupModel->id;
+    });
+});
+
+test('welcome email job sends email and updates timestamp when executed', function () {
+    Mail::fake();
+
+    $signup = WaitlistSignupFactory::new()->create([
+        'email' => 'test@example.com',
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'welcome_email_sent_at' => null,
+    ]);
+    $dto =
+
+    expect($signup->welcome_email_sent_at)->toBeNull();
+
+    $job = new SendWaitlistWelcomeEmailJob($signup);
+    $job->handle();
+
+    $signup->refresh();
+
+    expect($signup->welcome_email_sent_at)->not->toBeNull();
+
+    Mail::assertSent(WaitlistSignupWelcomeMail::class, function ($mail) {
+        return $mail->dto->email === 'test@example.com'
+            && $mail->dto->firstName === 'John'
+            && $mail->dto->lastName === 'Doe';
     });
 });

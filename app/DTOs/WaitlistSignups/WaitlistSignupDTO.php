@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DTOs\WaitlistSignups;
 
 use App\Http\Requests\StoreWaitlistSignupRequest;
+use App\Models\WaitlistSignup;
 
 final readonly class WaitlistSignupDTO
 {
@@ -24,6 +25,15 @@ final readonly class WaitlistSignupDTO
                 ? $request->string('lastName')->value()
                 : null,
             email: $request->string('email')->value()
+        );
+    }
+
+    public static function fromObject(WaitlistSignup $waitlistSignup): self
+    {
+        return new self(
+            firstName: $waitlistSignup->first_name,
+            lastName: $waitlistSignup->last_name,
+            email: $waitlistSignup->email
         );
     }
 

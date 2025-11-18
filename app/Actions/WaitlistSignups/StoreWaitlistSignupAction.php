@@ -5,20 +5,17 @@ declare(strict_types=1);
 namespace App\Actions\WaitlistSignups;
 
 use App\DTOs\WaitlistSignups\WaitlistSignupDTO;
-use App\Mail\WaitlistSignupWelcomeMail;
+use App\Events\WaitlistSignupCreated;
 use App\Models\WaitlistSignup;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Event;
 
 final class StoreWaitlistSignupAction
 {
     public function __invoke(WaitlistSignupDTO $dto): WaitlistSignup
     {
-        // Mass assignment here is good because
-        // we're using a DTO not like we're getting things from a request (Bypassing one of your Laravel Convention)
         $waitlistSignup = WaitlistSignup::create($dto->toArray());
 
-        Mail::to($dto->email)
-            ->queue(new WaitlistSignupWelcomeMail($dto));
+        Event::dispatch(new WaitlistSignupCreated($waitlistSignup));
 
         return $waitlistSignup;
     }

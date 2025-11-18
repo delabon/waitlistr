@@ -8,7 +8,7 @@ Think of **Waitlistr** as the foundation for your next SaaS platform.
 ### Tech Stack
 - PHP 8.4 & Laravel 12
 - Web Components: Tailwind 4, Vue 3, Inertia 2, Vite
-- DBs: MySQL 8, Redis (Cache & Queues)
+- DBs: MySQL 8, Redis (Pub/Sub, Cache, & Queues)
 - Testing: Pest 4 (+ browser testing)
 - CI: GitHub Actions
 - Code Quality: Pint, LaraStan(PHPStan - Level Max)
@@ -46,7 +46,13 @@ vendor/bin/sail npm install
 vendor/bin/sail npm run build
 ```
 
-5. Check out the app
+5. Start the queue worker
+
+```shell
+vendor/bin/sail artisan queue:work -v
+```
+
+6. Check out the app
 
 http://localhost/
 
@@ -54,6 +60,10 @@ To sign-in as an admin, make sure to run the corresponding seeder script (see in
 To sign-in as a regular user use these credentials `test@test.com/12345678`
 
 http://localhost/login
+
+To check for emails
+
+http://localhost:8025/
 
 ### Run all tests
 
