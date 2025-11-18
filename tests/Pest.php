@@ -54,5 +54,5 @@ function browserLogin(User $user): ArrayablePendingAwaitablePage|PendingAwaitabl
         ->type('[name="email"]', $user->email)
         ->type('[name="password"]', 'password')
         ->press('Log in')
-        ->wait(2);
+        ->wait(4); // give it a little bit of time to complete the login (especially in slower systems like in CI/CDs)
 }
