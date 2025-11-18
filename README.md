@@ -61,6 +61,10 @@ To sign-in as a regular user use these credentials `test@test.com/12345678`
 
 http://localhost/login
 
+To check for emails
+
+http://localhost:8025/
+
 ### Run all tests
 
 ```shell
