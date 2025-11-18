@@ -1,4 +1,4 @@
-# A "Coming Soon" Waitlist Starter Kit
+# A "Coming Soon" Waitlist Laravel Starter Kit
 
 You have a revolutionary SaaS idea that's going to change the world, but it's still in the early phase, and you want to capture potential customers' emails?
 **Waitlistr** will help you market your idea even before it's ready for the public.
