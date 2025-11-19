@@ -49,7 +49,13 @@ const isAdmin = page.props.auth?.user.role === 'admin';
                 >
                     <Link :href="item.href">
                         <component :is="item.icon" />
-                        <span>{{ item.title }}</span>
+                        <span class="inline-flex items-center justify-between gap-1 grow">
+                            <span>{{ item.title }}</span>
+                            <span
+                                v-if="item.count !== undefined"
+                                class="signups-count inline-flex items-center justify-center h-5 min-w-5 leading-none rounded-full bg-primary text-xs font-medium text-primary-foreground"
+                            >{{ item.count }}</span>
+                        </span>
                     </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>

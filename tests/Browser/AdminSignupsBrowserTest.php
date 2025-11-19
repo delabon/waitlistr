@@ -118,11 +118,10 @@ test('admin can see pagination controls when there are more than 10 signups', fu
 
     browserLogin($adminUser);
 
-    $page = visit('/dashboard/admin/signups');
-    $content = $page->content();
+    $page = visit('/dashboard/admin/signups')->wait(2);
 
-    expect(str_contains($content, '/dashboard/admin/signups?page=1'))->toBeTrue();
-    expect(str_contains($content, '/dashboard/admin/signups?page=2'))->toBeTrue();
+    $page->assertSourceHas('/dashboard/admin/signups?page=1')
+        ->assertSourceHas('/dashboard/admin/signups?page=2');
 });
 
 test('admin can navigate between pages', function () {

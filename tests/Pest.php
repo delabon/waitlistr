@@ -56,3 +56,5 @@ function browserLogin(User $user): ArrayablePendingAwaitablePage|PendingAwaitabl
         ->press('Log in')
         ->wait(4); // give it a little bit of time to complete the login (especially in slower systems like in CI/CDs)
 }
+
+pest()->browser()->timeout(10000);

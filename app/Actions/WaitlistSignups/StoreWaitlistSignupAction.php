@@ -7,6 +7,7 @@ namespace App\Actions\WaitlistSignups;
 use App\DTOs\WaitlistSignups\WaitlistSignupDTO;
 use App\Events\WaitlistSignupCreated;
 use App\Models\WaitlistSignup;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 
 final class StoreWaitlistSignupAction
@@ -16,6 +17,8 @@ final class StoreWaitlistSignupAction
         $waitlistSignup = WaitlistSignup::create($dto->toArray());
 
         Event::dispatch(new WaitlistSignupCreated($waitlistSignup));
+
+        Cache::forget('waitlistSignupsCount');
 
         return $waitlistSignup;
     }
