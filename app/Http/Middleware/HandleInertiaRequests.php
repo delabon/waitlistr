@@ -58,7 +58,7 @@ final class HandleInertiaRequests extends Middleware
             'signupsCount' => fn () => Number::forHumans(
                 number: ($this->countWaitlistSignupsAction)(),
                 abbreviate: true
-            )
+            ),
         ];
     }
 }
