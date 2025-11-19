@@ -53,10 +53,8 @@ const isAdmin = page.props.auth?.user.role === 'admin';
                             <span>{{ item.title }}</span>
                             <span
                                 v-if="item.count !== undefined"
-                                class="inline-flex items-center justify-center h-5 min-w-5 leading-none rounded-full bg-primary text-xs font-medium text-primary-foreground"
-                            >
-                                {{ item.count }}
-                            </span>
+                                class="signups-count inline-flex items-center justify-center h-5 min-w-5 leading-none rounded-full bg-primary text-xs font-medium text-primary-foreground"
+                            >{{ item.count }}</span>
                         </span>
                     </Link>
                 </SidebarMenuButton>
