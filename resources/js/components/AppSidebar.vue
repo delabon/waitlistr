@@ -14,7 +14,7 @@ import {
 import { dashboard as dashboardRoute } from '@/routes';
 import { signups as adminSignupsRoute } from '@/routes/dashboard/admin';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import {Link, usePage} from '@inertiajs/vue3';
 import { Folder, LayoutGrid, MailCheck } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
@@ -31,6 +31,7 @@ const adminNavItems: NavItem[] = [
         title: 'Signups',
         href: adminSignupsRoute(),
         icon: MailCheck,
+        count: usePage().props.signupsCount,
     },
 ];
 

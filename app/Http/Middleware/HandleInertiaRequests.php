@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Actions\WaitlistSignups\CountWaitlistSignupsAction;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Middleware;
 
 final class HandleInertiaRequests extends Middleware
@@ -18,6 +20,10 @@ final class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+
+    public function __construct(
+        public readonly CountWaitlistSignupsAction $countWaitlistSignupsAction
+    ) {}
 
     /**
      * Determines the current asset version.
@@ -49,6 +55,11 @@ final class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'signupsCount' => fn () => Cache::remember(
+                'waitlistSignupsCount',
+                now()->addWeek(),
+                fn () => ($this->countWaitlistSignupsAction)()
+            )
         ];
     }
 }
