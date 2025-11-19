@@ -11,6 +11,7 @@ final class CountWaitlistSignupsAction
 {
     public function __invoke(): int
     {
+        /** @phpstan-ignore cast.int */
         return (int) Cache::remember(
             'waitlistSignupsCount',
             now()->addWeek(),
