@@ -7,7 +7,7 @@ namespace App\Http\Middleware;
 use App\Actions\WaitlistSignups\CountWaitlistSignupsAction;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Number;
 use Inertia\Middleware;
 
 final class HandleInertiaRequests extends Middleware
@@ -55,10 +55,9 @@ final class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
-            'signupsCount' => fn () => Cache::remember(
-                'waitlistSignupsCount',
-                now()->addWeek(),
-                fn () => ($this->countWaitlistSignupsAction)()
+            'signupsCount' => fn () => Number::forHumans(
+                number: ($this->countWaitlistSignupsAction)(),
+                abbreviate: true
             )
         ];
     }

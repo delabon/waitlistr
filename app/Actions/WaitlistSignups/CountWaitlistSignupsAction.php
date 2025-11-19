@@ -6,19 +6,15 @@ namespace App\Actions\WaitlistSignups;
 
 use App\Models\WaitlistSignup;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Number;
 
 final class CountWaitlistSignupsAction
 {
-    public function __invoke(): string
+    public function __invoke(): int
     {
-        return Cache::remember(
+        return (int) Cache::remember(
             'waitlistSignupsCount',
             now()->addWeek(),
-            static fn () => Number::forHumans(
-                number: WaitlistSignup::query()->count(),
-                abbreviate: true
-            )
+            static fn () => WaitlistSignup::query()->count()
         );
     }
 }
