@@ -18,7 +18,7 @@ final class WaitlistSignupFactory extends Factory
     public function definition(): array
     {
         return [
-            'email' => $this->faker->email(),
+            'email' => $this->faker->unique()->email(),
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
             'welcome_email_sent_at' => null,
