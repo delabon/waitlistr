@@ -12,7 +12,7 @@ final class CountWaitlistSignupsAction
     public function __invoke(): int
     {
         /** @phpstan-ignore return.type */
-        return Cache::remember(
+        return (int) Cache::remember(
             'waitlistSignupsCount',
             now()->addWeek(),
             static fn () => WaitlistSignup::query()->count()
