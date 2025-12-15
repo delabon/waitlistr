@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string $last_name
  * @property-read CarbonInterface|null $welcome_email_sent_at
  * @property-read CarbonInterface $created_at
- * @property-read CarbonInterface|null $updated_at
+ * @property-read CarbonInterface $updated_at
  */
 final class WaitlistSignup extends Model
 {
@@ -33,19 +33,11 @@ final class WaitlistSignup extends Model
 
     public function getFormattedCreatedAtAttribute(): string
     {
-        if (! $this->created_at) {
-            return '';
-        }
-
-        return $this->created_at->format(self::DATETIME_FORMAT);
+        return $this->created_at?->format(self::DATETIME_FORMAT) ?? '';
     }
 
     public function getFormattedWelcomeEmailSentAtAttribute(): string
     {
-        if (! $this->welcome_email_sent_at) {
-            return '';
-        }
-
-        return $this->welcome_email_sent_at->format(self::DATETIME_FORMAT);
+        return $this->welcome_email_sent_at?->format(self::DATETIME_FORMAT) ?? '';
     }
 }
