@@ -33,7 +33,7 @@ final class WaitlistSignup extends Model
 
     public function getFormattedCreatedAtAttribute(): string
     {
-        return $this->created_at?->format(self::DATETIME_FORMAT) ?? '';
+        return $this->created_at->format(self::DATETIME_FORMAT);
     }
 
     public function getFormattedWelcomeEmailSentAtAttribute(): string
