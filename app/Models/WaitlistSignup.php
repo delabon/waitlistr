@@ -4,8 +4,18 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property-read int $id
+ * @property-read string $email
+ * @property-read string $first_name
+ * @property-read string $last_name
+ * @property-read CarbonInterface|null $welcome_email_sent_at
+ * @property-read CarbonInterface $created_at
+ * @property-read CarbonInterface|null $updated_at
+ */
 final class WaitlistSignup extends Model
 {
     public const string DATETIME_FORMAT = 'M j, Y - h:i A';
