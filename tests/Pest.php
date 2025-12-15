@@ -2,11 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
-use Pest\Browser\Api\ArrayablePendingAwaitablePage;
-use Pest\Browser\Api\AwaitableWebpage;
-use Pest\Browser\Api\PendingAwaitablePage;
-
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -47,14 +42,5 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
-
-function browserLogin(User $user): ArrayablePendingAwaitablePage|PendingAwaitablePage|AwaitableWebpage
-{
-    return visit('/login')
-        ->type('[name="email"]', $user->email)
-        ->type('[name="password"]', 'password')
-        ->press('Log in')
-        ->wait(4); // give it a little bit of time to complete the login (especially in slower systems like in CI/CDs)
-}
 
 pest()->browser()->timeout(10000);

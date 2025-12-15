@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Actions\WaitlistSignups\GetWaitlistSignupsAction;
+use App\Actions\WaitlistSignups\PaginateWaitlistSignupsAction;
 use Database\Factories\WaitlistSignupFactory;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -11,7 +11,7 @@ it('returns paginated signups ordered by latest id', function () {
     $secondSignup = WaitlistSignupFactory::new()->create(['email' => 'second@example.com']);
     $thirdSignup = WaitlistSignupFactory::new()->create(['email' => 'third@example.com']);
 
-    $action = new GetWaitlistSignupsAction();
+    $action = new PaginateWaitlistSignupsAction();
 
     $result = $action();
 
@@ -25,7 +25,7 @@ it('returns paginated signups ordered by latest id', function () {
 it('paginates with default 10 items per page', function () {
     WaitlistSignupFactory::times(15)->create();
 
-    $action = new GetWaitlistSignupsAction();
+    $action = new PaginateWaitlistSignupsAction();
 
     $result = $action();
 
@@ -38,7 +38,7 @@ it('paginates with default 10 items per page', function () {
 it('accepts custom items per page parameter', function () {
     WaitlistSignupFactory::times(25)->create();
 
-    $action = new GetWaitlistSignupsAction();
+    $action = new PaginateWaitlistSignupsAction();
 
     $result = $action(maxItemsPerPage: 5);
 
@@ -49,7 +49,7 @@ it('accepts custom items per page parameter', function () {
 });
 
 it('returns empty paginator when no signups exist', function () {
-    $action = new GetWaitlistSignupsAction();
+    $action = new PaginateWaitlistSignupsAction();
 
     $result = $action();
 
@@ -61,7 +61,7 @@ it('returns empty paginator when no signups exist', function () {
 it('handles single signup correctly', function () {
     $onlySignup = WaitlistSignupFactory::new()->create(['email' => 'only@example.com']);
 
-    $action = new GetWaitlistSignupsAction();
+    $action = new PaginateWaitlistSignupsAction();
 
     $result = $action();
 
@@ -73,7 +73,7 @@ it('handles single signup correctly', function () {
 it('returns correct pagination metadata', function () {
     WaitlistSignupFactory::times(35)->create();
 
-    $action = new GetWaitlistSignupsAction();
+    $action = new PaginateWaitlistSignupsAction();
 
     $result = $action(maxItemsPerPage: 10);
 

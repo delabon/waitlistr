@@ -14,9 +14,9 @@ test('admin can see signups page with navigation', function () {
         'email' => 'admin@example.com',
     ]);
 
-    browserLogin($adminUser);
+    $this->actingAs($adminUser);
 
-    $page = visit('/dashboard/admin/signups');
+    $page = visit(route('dashboard.admin.signups'));
 
     $page->assertSee('Signups')
         ->assertSee('ID')
@@ -45,9 +45,9 @@ test('admin can view list of waitlist signups', function () {
         'welcome_email_sent_at' => $now,
     ]);
 
-    browserLogin($adminUser);
+    $this->actingAs($adminUser);
 
-    $page = visit('/dashboard/admin/signups');
+    $page = visit(route('dashboard.admin.signups'));
 
     $page->assertSee('first@example.com')
         ->assertSee('First User')
@@ -66,8 +66,9 @@ test('admin can see signups with only email addresses', function () {
         'last_name' => null,
     ]);
 
-    browserLogin($adminUser);
-    $page = visit('/dashboard/admin/signups');
+    $this->actingAs($adminUser);
+
+    $page = visit(route('dashboard.admin.signups'));
 
     $page->assertSee('email-only@example.com');
 });
@@ -85,8 +86,9 @@ test('admin sees newest signups first', function () {
         'created_at' => now(),
     ]);
 
-    browserLogin($adminUser);
-    $page = visit('/dashboard/admin/signups');
+    $this->actingAs($adminUser);
+
+    $page = visit(route('dashboard.admin.signups'));
 
     $pageContent = $page->content();
 
@@ -99,54 +101,62 @@ test('admin sees newest signups first', function () {
 test('non-admin user cannot access admin signups page', function () {
     $regularUser = UserFactory::new()->user()->create();
 
-    browserLogin($regularUser);
-    $page = visit('/dashboard/admin/signups');
+    $this->actingAs($regularUser);
+
+    $page = visit(route('dashboard.admin.signups'));
 
     $page->assertSee(Response::HTTP_FORBIDDEN);
 });
 
 test('guest is redirected to login when accessing admin signups page', function () {
-    $page = visit('/dashboard/admin/signups');
+    $page = visit(route('dashboard.admin.signups'));
 
     $page->assertSee('Log in');
 });
 
-test('admin can see pagination controls when there are more than 10 signups', function () {
+test('admin can paginate the signups', function () {
     $adminUser = UserFactory::new()->admin()->create();
 
-    WaitlistSignupFactory::times(15)->create();
+    $signups = WaitlistSignupFactory::times(15)->create();
 
-    browserLogin($adminUser);
+    $this->actingAs($adminUser);
 
-    $page = visit('/dashboard/admin/signups')->wait(2);
+    // First page
+    $page = visit(route('dashboard.admin.signups'))
+        ->wait(2);
 
     $page->assertSourceHas('/dashboard/admin/signups?page=1')
         ->assertSourceHas('/dashboard/admin/signups?page=2');
-});
 
-test('admin can navigate between pages', function () {
-    $adminUser = UserFactory::new()->admin()->create();
+    $signups->sortByDesc('id')
+        ->slice(0, 9)
+        ->each(static fn (WaitlistSignup $signup) => $page->assertSee($signup->email));
 
-    WaitlistSignupFactory::new()->count(15)->create();
+    $signups->sortByDesc('id')
+        ->slice(10, 5)
+        ->each(static fn (WaitlistSignup $signup) => $page->assertDontSee($signup->email));
 
-    browserLogin($adminUser);
-    $page = visit('/dashboard/admin/signups');
-
-    expect($page->content())->toContain('1')
-        ->and($page->content())->toContain('2');
-
+    // Second page
     $page->click('a[href*="page=2"]:not(:has-text("Next"))');
 
-    $page->wait(2);
+    $page->assertSourceHas('/dashboard/admin/signups?page=1')
+        ->assertSourceHas('/dashboard/admin/signups?page=2');
 
-    assertDatabaseCount('waitlist_signups', 15);
+    $signups->sortByDesc('id')
+        ->slice(0, 9)
+        ->each(static fn (WaitlistSignup $signup) => $page->assertDontSee($signup->email));
+
+    $signups->sortByDesc('id')
+        ->slice(10, 5)
+        ->each(static fn (WaitlistSignup $signup) => $page->assertSee($signup->email));
 });
 
 test('admin sees empty state when no signups exist', function () {
     $adminUser = UserFactory::new()->admin()->create();
 
-    browserLogin($adminUser);
-    $page = visit('/dashboard/admin/signups');
+    $this->actingAs($adminUser);
+
+    $page = visit(route('dashboard.admin.signups'));
 
     $page->assertSee('Signups');
     assertDatabaseCount('waitlist_signups', 0);
@@ -159,9 +169,9 @@ test('admin signups page works on mobile viewport', function () {
         'email' => 'mobile@example.com',
     ]);
 
-    browserLogin($adminUser);
+    $this->actingAs($adminUser);
 
-    $page = visit('/dashboard/admin/signups')
+    $page = visit(route('dashboard.admin.signups'))
         ->on()->mobile();
 
     $page->assertSee('Signups')
@@ -175,8 +185,9 @@ test('admin signups page works on desktop viewport', function () {
         'email' => 'desktop@example.com',
     ]);
 
-    browserLogin($adminUser);
-    $page = visit('/dashboard/admin/signups')
+    $this->actingAs($adminUser);
+
+    $page = visit(route('dashboard.admin.signups'))
         ->on()->desktop();
 
     $page->assertSee('Signups')
@@ -190,12 +201,12 @@ test('admin can view signups page multiple times', function () {
         'email' => 'test@example.com',
     ]);
 
-    browserLogin($adminUser);
+    $this->actingAs($adminUser);
 
-    $firstVisit = visit('/dashboard/admin/signups');
+    $firstVisit = visit(route('dashboard.admin.signups'));
     $firstVisit->assertSee('test@example.com');
 
-    $secondVisit = visit('/dashboard/admin/signups');
+    $secondVisit = visit(route('dashboard.admin.signups'));
     $secondVisit->assertSee('test@example.com');
 });
 
@@ -204,9 +215,9 @@ test('admin page shows correct number of signups per page', function () {
 
     $signups = WaitlistSignupFactory::new()->count(10)->create();
 
-    browserLogin($adminUser);
+    $this->actingAs($adminUser);
 
-    $page = visit('/dashboard/admin/signups');
+    $page = visit(route('dashboard.admin.signups'));
 
     foreach ($signups as $signup) {
         $page->assertSee($signup->email);
@@ -218,9 +229,9 @@ test('admin signups page passes smoke test', function () {
 
     WaitlistSignupFactory::new()->count(3)->create();
 
-    browserLogin($adminUser);
+    $this->actingAs($adminUser);
 
-    visit('/dashboard/admin/signups')->assertNoSmoke();
+    visit(route('dashboard.admin.signups'))->assertNoSmoke();
 });
 
 test('admin can see full name when both first and last names are provided', function () {
@@ -232,8 +243,9 @@ test('admin can see full name when both first and last names are provided', func
         'last_name' => 'Doe',
     ]);
 
-    browserLogin($adminUser);
-    $page = visit('/dashboard/admin/signups');
+    $this->actingAs($adminUser);
+
+    $page = visit(route('dashboard.admin.signups'));
 
     $page->assertSee('John Doe');
 });
@@ -247,8 +259,9 @@ test('admin page table is scrollable horizontally when content overflows', funct
         'last_name' => 'VeryLongLastName',
     ]);
 
-    browserLogin($adminUser);
-    $page = visit('/dashboard/admin/signups');
+    $this->actingAs($adminUser);
+
+    $page = visit(route('dashboard.admin.signups'));
 
     $page->assertSee('verylongemailaddress@extremelylongdomainname.com');
 });
@@ -256,8 +269,9 @@ test('admin page table is scrollable horizontally when content overflows', funct
 test('admin signups page breadcrumb shows correct navigation path', function () {
     $adminUser = UserFactory::new()->admin()->create();
 
-    browserLogin($adminUser);
-    $page = visit('/dashboard/admin/signups');
+    $this->actingAs($adminUser);
+
+    $page = visit(route('dashboard.admin.signups'));
 
     $page->assertSee('Signups');
 });
