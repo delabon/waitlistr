@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\DTOs\WaitlistSignups\WaitlistSignupDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class StoreWaitlistSignupRequest extends FormRequest
@@ -37,5 +38,13 @@ final class StoreWaitlistSignupRequest extends FormRequest
                 'unique:waitlist_signups,email',
             ],
         ];
+    }
+
+    public function toDto(): WaitlistSignupDTO
+    {
+        $data = $this->validated();
+
+        /** @phpstan-ignore argument.type */
+        return WaitlistSignupDTO::fromArray($data);
     }
 }
