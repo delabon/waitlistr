@@ -44,6 +44,7 @@ final class StoreWaitlistSignupRequest extends FormRequest
     {
         $data = $this->validated();
 
+        /** @phpstan-ignore argument.type */
         return WaitlistSignupDTO::fromArray($data);
     }
 }

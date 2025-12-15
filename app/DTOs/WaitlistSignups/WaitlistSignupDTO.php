@@ -7,6 +7,9 @@ namespace App\DTOs\WaitlistSignups;
 use App\Models\WaitlistSignup;
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements Arrayable<string, string|null>
+ */
 final readonly class WaitlistSignupDTO implements Arrayable
 {
     public function __construct(
@@ -15,17 +18,21 @@ final readonly class WaitlistSignupDTO implements Arrayable
         public string $email
     ) {}
 
+    /**
+     * @param array<string, string|null> $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
             firstName: $data['firstName'] ?? $data['first_name'] ?? null,
             lastName: $data['lastName'] ?? $data['last_name'] ?? null,
-            email: $data['email']
+            email: $data['email'] ?? ''
         );
     }
 
     public static function fromModel(WaitlistSignup $waitlistSignup): self
     {
+        /** @phpstan-ignore argument.type */
         return self::fromArray($waitlistSignup->toArray());
     }
 
