@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\WaitlistSignup;
 use Database\Factories\WaitlistSignupFactory;
 
+use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 
 test('guest can see waitlist signup form', function () {
@@ -63,7 +64,19 @@ test('multiple guests can signup sequentially', function () {
         ->wait(3)
         ->assertSee('You\'ve joined the list successfully!');
 
-    expect(WaitlistSignup::count())->toBe(2);
+    assertDatabaseCount('waitlist_signups', 2);
+
+    assertDatabaseHas('waitlist_signups', [
+        'email' => 'first@example.com',
+        'first_name' => null,
+        'last_name' => null,
+    ]);
+
+    assertDatabaseHas('waitlist_signups', [
+        'email' => 'second@example.com',
+        'first_name' => null,
+        'last_name' => null,
+    ]);
 });
 
 test('form shows validation error for missing email', function () {
