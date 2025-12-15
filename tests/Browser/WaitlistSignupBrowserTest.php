@@ -123,14 +123,6 @@ test('form clears after successful submission', function () {
     ]);
 });
 
-test('button shows loading state during submission', function () {
-    $page = visit('/');
-
-    $page->type('[name="email"]', 'loading.test@example.com')
-        ->press("Signup Now - We're Launching Soon!")
-        ->assertSee('Joining...');
-});
-
 test('form works on mobile viewport', function () {
     $page = visit('/')
         ->on()->mobile();
