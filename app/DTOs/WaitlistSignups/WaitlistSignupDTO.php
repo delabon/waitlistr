@@ -19,7 +19,7 @@ final readonly class WaitlistSignupDTO implements Arrayable
     ) {}
 
     /**
-     * @param array<string, string|null> $data
+     * @param  array<string, string|null>  $data
      */
     public static function fromArray(array $data): self
     {
@@ -37,7 +37,7 @@ final readonly class WaitlistSignupDTO implements Arrayable
     }
 
     /**
-     * @return array<string, ?string>
+     * @return array<string, string|null>
      */
     public function toArray(): array
     {
