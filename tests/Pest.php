@@ -2,11 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
-use Pest\Browser\Api\ArrayablePendingAwaitablePage;
-use Pest\Browser\Api\AwaitableWebpage;
-use Pest\Browser\Api\PendingAwaitablePage;
-
 /*
 |--------------------------------------------------------------------------
 | Test Case

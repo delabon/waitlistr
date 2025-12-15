@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\WaitlistSignupController;
 use App\Models\WaitlistSignup;
 use Database\Factories\UserFactory;
 use Database\Factories\WaitlistSignupFactory;
@@ -131,15 +130,11 @@ test('admin can paginate the signups', function () {
 
     $signups->sortByDesc('id')
         ->slice(0, 9)
-        ->each(static fn (WaitlistSignup $signup) =>
-            $page->assertSee($signup->email)
-        );
+        ->each(static fn (WaitlistSignup $signup) => $page->assertSee($signup->email));
 
     $signups->sortByDesc('id')
         ->slice(10, 5)
-        ->each(static fn (WaitlistSignup $signup) =>
-            $page->assertDontSee($signup->email)
-        );
+        ->each(static fn (WaitlistSignup $signup) => $page->assertDontSee($signup->email));
 
     // Second page
     $page->click('a[href*="page=2"]:not(:has-text("Next"))');
@@ -149,15 +144,11 @@ test('admin can paginate the signups', function () {
 
     $signups->sortByDesc('id')
         ->slice(0, 9)
-        ->each(static fn (WaitlistSignup $signup) =>
-        $page->assertDontSee($signup->email)
-        );
+        ->each(static fn (WaitlistSignup $signup) => $page->assertDontSee($signup->email));
 
     $signups->sortByDesc('id')
         ->slice(10, 5)
-        ->each(static fn (WaitlistSignup $signup) =>
-        $page->assertSee($signup->email)
-        );
+        ->each(static fn (WaitlistSignup $signup) => $page->assertSee($signup->email));
 });
 
 test('admin sees empty state when no signups exist', function () {
