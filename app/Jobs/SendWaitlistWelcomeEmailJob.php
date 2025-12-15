@@ -21,7 +21,8 @@ final class SendWaitlistWelcomeEmailJob implements ShouldQueue
 
     public function handle(): void
     {
-        $dto = WaitlistSignupDTO::fromObject($this->waitlistSignup);
+        $dto = WaitlistSignupDTO::fromModel($this->waitlistSignup);
+
         Mail::to($dto->email)
             ->send(new WaitlistSignupWelcomeMail($dto));
 

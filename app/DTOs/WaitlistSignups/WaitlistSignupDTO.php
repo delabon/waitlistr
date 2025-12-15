@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\DTOs\WaitlistSignups;
 
-use App\Http\Requests\StoreWaitlistSignupRequest;
 use App\Models\WaitlistSignup;
+use Illuminate\Contracts\Support\Arrayable;
 
-final readonly class WaitlistSignupDTO
+final readonly class WaitlistSignupDTO implements Arrayable
 {
     public function __construct(
         public ?string $firstName,
@@ -15,26 +15,18 @@ final readonly class WaitlistSignupDTO
         public string $email
     ) {}
 
-    public static function fromRequest(StoreWaitlistSignupRequest $request): self
+    public static function fromArray(array $data): self
     {
         return new self(
-            firstName: $request->input('firstName')
-                ? $request->string('firstName')->value()
-                : null,
-            lastName: $request->input('lastName')
-                ? $request->string('lastName')->value()
-                : null,
-            email: $request->string('email')->value()
+            firstName: $data['firstName'] ?? $data['first_name'] ?? null,
+            lastName: $data['lastName'] ?? $data['last_name'] ?? null,
+            email: $data['email']
         );
     }
 
-    public static function fromObject(WaitlistSignup $waitlistSignup): self
+    public static function fromModel(WaitlistSignup $waitlistSignup): self
     {
-        return new self(
-            firstName: $waitlistSignup->first_name,
-            lastName: $waitlistSignup->last_name,
-            email: $waitlistSignup->email
-        );
+        return self::fromArray($waitlistSignup->toArray());
     }
 
     /**

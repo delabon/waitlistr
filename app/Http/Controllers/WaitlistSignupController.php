@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Actions\WaitlistSignups\PaginateWaitlistSignupsAction;
 use App\Actions\WaitlistSignups\StoreWaitlistSignupAction;
-use App\DTOs\WaitlistSignups\WaitlistSignupDTO;
 use App\Http\Requests\StoreWaitlistSignupRequest;
 use App\Http\Resources\WaitlistSignupResource;
 use Illuminate\Http\RedirectResponse;
@@ -35,7 +34,7 @@ final class WaitlistSignupController extends Controller
         StoreWaitlistSignupRequest $request,
         StoreWaitlistSignupAction $action
     ): RedirectResponse {
-        $action(WaitlistSignupDTO::fromRequest($request));
+        $action($request->toDto());
 
         return back();
     }
