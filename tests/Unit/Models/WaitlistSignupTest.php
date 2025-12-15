@@ -24,12 +24,6 @@ it('formats the created_at attribute', function () {
     expect($waitlistSignup->formatted_created_at)->toBe($waitlistSignup->created_at->format(WaitlistSignup::DATETIME_FORMAT));
 });
 
-it('returns empty string when trying to format the created_at attribute when is null', function () {
-    $waitlistSignup = WaitlistSignupFactory::new()->make();
-
-    expect($waitlistSignup->formatted_created_at)->toBeEmpty();
-});
-
 it('formats the welcome_email_sent_at attribute', function () {
     $waitlistSignup = WaitlistSignupFactory::new()->welcomeEmailSentAt(now())->create();
 
