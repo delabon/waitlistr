@@ -15,7 +15,7 @@ use Inertia\Response;
 
 final class WaitlistSignupController extends Controller
 {
-    private const int MAX_ITEMS_PER_PAGE = 10;
+    public const int MAX_ITEMS_PER_PAGE = 10;
 
     public function index(GetWaitlistSignupsAction $action): Response
     {
