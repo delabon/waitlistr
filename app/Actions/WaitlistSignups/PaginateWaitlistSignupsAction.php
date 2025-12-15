@@ -7,7 +7,7 @@ namespace App\Actions\WaitlistSignups;
 use App\Models\WaitlistSignup;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-final class GetWaitlistSignupsAction
+final class PaginateWaitlistSignupsAction
 {
     /**
      * @return LengthAwarePaginator<int, WaitlistSignup>

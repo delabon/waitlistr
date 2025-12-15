@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Actions\WaitlistSignups\GetWaitlistSignupsAction;
+use App\Actions\WaitlistSignups\PaginateWaitlistSignupsAction;
 use App\Actions\WaitlistSignups\StoreWaitlistSignupAction;
 use App\DTOs\WaitlistSignups\WaitlistSignupDTO;
 use App\Http\Requests\StoreWaitlistSignupRequest;
@@ -17,7 +17,7 @@ final class WaitlistSignupController extends Controller
 {
     public const int MAX_ITEMS_PER_PAGE = 10;
 
-    public function index(GetWaitlistSignupsAction $action): Response
+    public function index(PaginateWaitlistSignupsAction $action): Response
     {
         $waitlistSignups = $action(self::MAX_ITEMS_PER_PAGE);
 
