@@ -20,7 +20,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property-read string $password
  * @property-read string|null $remember_token
  * @property-read CarbonInterface $created_at
- * @property-read CarbonInterface|null $updated_at
+ * @property-read CarbonInterface $updated_at
  */
 final class User extends Authenticatable
 {
