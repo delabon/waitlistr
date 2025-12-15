@@ -48,13 +48,4 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function browserLogin(User $user): ArrayablePendingAwaitablePage|PendingAwaitablePage|AwaitableWebpage
-{
-    return visit('/login')
-        ->type('[name="email"]', $user->email)
-        ->type('[name="password"]', 'password')
-        ->press('Log in')
-        ->wait(4); // give it a little bit of time to complete the login (especially in slower systems like in CI/CDs)
-}
-
 pest()->browser()->timeout(10000);
