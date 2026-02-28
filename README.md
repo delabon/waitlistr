@@ -14,6 +14,8 @@ Think of **Waitlistr** as the foundation for your next SaaS platform.
 - Code Quality: Pint, LaraStan(PHPStan - Level Max)
 - Dev tools: Sail (Docker), Telescope, Horizon
 
+<img width="2560" height="1600" alt="waitlistr" src="https://github.com/user-attachments/assets/4263ce47-ac42-4c8d-8336-24d6d6bebd34" />
+
 ### Installation
 
 1. Clone the repo
