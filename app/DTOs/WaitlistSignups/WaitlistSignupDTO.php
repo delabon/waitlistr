@@ -32,7 +32,6 @@ final readonly class WaitlistSignupDTO implements Arrayable
 
     public static function fromModel(WaitlistSignup $waitlistSignup): self
     {
-        /** @phpstan-ignore argument.type */
         return self::fromArray($waitlistSignup->toArray());
     }
 
