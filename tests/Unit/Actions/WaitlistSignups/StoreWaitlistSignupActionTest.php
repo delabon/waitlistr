@@ -18,7 +18,7 @@ it('creates waitlist signup from DTO', function () {
     $dto = WaitlistSignupDTO::fromArray([
         'firstName' => 'John',
         'lastName' => 'Doe',
-        'email' => 'john.doe@example.com'
+        'email' => 'john.doe@example.com',
     ]);
 
     $action = new StoreWaitlistSignupAction();
@@ -43,7 +43,7 @@ it('dispatches WaitlistSignupCreated event', function () {
     $dto = WaitlistSignupDTO::fromArray([
         'firstName' => 'Alice',
         'lastName' => 'Johnson',
-        'email' => 'alice.johnson@example.com'
+        'email' => 'alice.johnson@example.com',
     ]);
 
     $action = new StoreWaitlistSignupAction();
@@ -63,7 +63,7 @@ it('clears waitlistSignupsCount cache', function () {
     $dto = WaitlistSignupDTO::fromArray([
         'firstName' => 'Bob',
         'lastName' => 'Wilson',
-        'email' => 'bob.wilson@example.com'
+        'email' => 'bob.wilson@example.com',
     ]);
 
     $action = new StoreWaitlistSignupAction();
@@ -77,7 +77,7 @@ it('handles signup with only email and no names', function () {
     $dto = WaitlistSignupDTO::fromArray([
         'firstName' => null,
         'lastName' => null,
-        'email' => 'noname@example.com'
+        'email' => 'noname@example.com',
     ]);
 
     $action = new StoreWaitlistSignupAction();
@@ -100,7 +100,7 @@ it('handles signup with only first name', function () {
     $dto = WaitlistSignupDTO::fromArray([
         'firstName' => 'Charlie',
         'lastName' => null,
-        'email' => 'charlie@example.com'
+        'email' => 'charlie@example.com',
     ]);
 
     $action = new StoreWaitlistSignupAction();
@@ -116,7 +116,7 @@ it('returns created model with all attributes', function () {
     $dto = WaitlistSignupDTO::fromArray([
         'firstName' => 'David',
         'lastName' => 'Brown',
-        'email' => 'david.brown@example.com'
+        'email' => 'david.brown@example.com',
     ]);
 
     $action = new StoreWaitlistSignupAction();
