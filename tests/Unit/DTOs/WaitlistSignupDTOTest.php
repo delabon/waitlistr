@@ -7,11 +7,11 @@ use Database\Factories\WaitlistSignupFactory;
 use Illuminate\Contracts\Support\Arrayable;
 
 it('creates an instance of Arrayable', function () {
-    $dto = new WaitlistSignupDTO(
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@doe.test',
-    );
+    $dto = WaitlistSignupDTO::fromArray([
+        'firstName' => 'John',
+        'lastName' => 'Doe',
+        'email' => 'john@doe.test',
+    ]);
 
     expect($dto)->toBeInstanceOf(Arrayable::class);
 });
