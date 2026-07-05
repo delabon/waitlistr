@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Event;
 
 final class StoreWaitlistSignupAction
 {
-    public function __invoke(WaitlistSignupDTO $dto): WaitlistSignup
+    public function handle(WaitlistSignupDTO $dto): WaitlistSignup
     {
         $waitlistSignup = WaitlistSignup::create($dto->toArray());
 

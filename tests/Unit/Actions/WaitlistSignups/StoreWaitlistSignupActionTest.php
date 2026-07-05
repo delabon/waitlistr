@@ -23,7 +23,7 @@ it('creates waitlist signup from DTO', function () {
 
     $action = new StoreWaitlistSignupAction();
 
-    $result = $action($dto);
+    $result = $action->handle($dto);
 
     expect($result)->toBeInstanceOf(WaitlistSignup::class);
     expect($result->first_name)->toBe('John');
@@ -48,7 +48,7 @@ it('dispatches WaitlistSignupCreated event', function () {
 
     $action = new StoreWaitlistSignupAction();
 
-    $result = $action($dto);
+    $result = $action->handle($dto);
 
     Event::assertDispatched(WaitlistSignupCreated::class, function ($event) use ($result) {
         return $event->waitlistSignup->id === $result->id
@@ -68,7 +68,7 @@ it('clears waitlistSignupsCount cache', function () {
 
     $action = new StoreWaitlistSignupAction();
 
-    $action($dto);
+    $action->handle($dto);
 
     expect(Cache::has('waitlistSignupsCount'))->toBeFalse();
 });
@@ -82,7 +82,7 @@ it('handles signup with only email and no names', function () {
 
     $action = new StoreWaitlistSignupAction();
 
-    $result = $action($dto);
+    $result = $action->handle($dto);
 
     expect($result->first_name)->toBeNull();
     expect($result->last_name)->toBeNull();
@@ -105,7 +105,7 @@ it('handles signup with only first name', function () {
 
     $action = new StoreWaitlistSignupAction();
 
-    $result = $action($dto);
+    $result = $action->handle($dto);
 
     expect($result->first_name)->toBe('Charlie');
     expect($result->last_name)->toBeNull();
@@ -121,7 +121,7 @@ it('returns created model with all attributes', function () {
 
     $action = new StoreWaitlistSignupAction();
 
-    $result = $action($dto);
+    $result = $action->handle($dto);
 
     expect($result)->toBeInstanceOf(WaitlistSignup::class);
     expect($result->exists)->toBeTrue();

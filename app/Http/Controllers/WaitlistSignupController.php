@@ -34,7 +34,7 @@ final class WaitlistSignupController extends Controller
         StoreWaitlistSignupRequest $request,
         StoreWaitlistSignupAction $action
     ): RedirectResponse {
-        $action($request->toDto());
+        $action->handle($request->toDto());
 
         return back();
     }
