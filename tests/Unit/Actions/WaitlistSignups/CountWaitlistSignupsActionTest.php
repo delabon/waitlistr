@@ -14,7 +14,7 @@ beforeEach(function () {
 it('returns zero when no signups exist', function () {
     $action = new CountWaitlistSignupsAction();
 
-    $count = $action();
+    $count = $action->handle();
 
     expect($count)->toBe(0);
 });
@@ -24,7 +24,7 @@ it('returns correct count when signups exist', function () {
 
     $action = new CountWaitlistSignupsAction();
 
-    $count = $action();
+    $count = $action->handle();
 
     expect($count)->toBe(5);
 });
@@ -34,12 +34,12 @@ it('caches the count result', function () {
 
     $action = new CountWaitlistSignupsAction();
 
-    $firstCount = $action();
+    $firstCount = $action->handle();
     expect($firstCount)->toBe(3);
 
     WaitlistSignupFactory::times(2)->create();
 
-    $secondCount = $action();
+    $secondCount = $action->handle();
     expect($secondCount)->toBe(3);
 });
 
@@ -47,13 +47,13 @@ it('returns fresh count after cache is cleared', function () {
     WaitlistSignupFactory::times(3)->create();
 
     $action = new CountWaitlistSignupsAction();
-    $firstCount = $action();
+    $firstCount = $action->handle();
 
     WaitlistSignupFactory::times(2)->create();
 
     Cache::forget('waitlistSignupsCount');
 
-    $secondCount = $action();
+    $secondCount = $action->handle();
 
     expect($firstCount)->toBe(3);
     expect($secondCount)->toBe(5);
@@ -64,7 +64,7 @@ it('handles large number of signups', function () {
 
     $action = new CountWaitlistSignupsAction();
 
-    $count = $action();
+    $count = $action->handle();
 
     expect($count)->toBe(1000);
 });
@@ -74,7 +74,7 @@ it('returns integer type', function () {
 
     $action = new CountWaitlistSignupsAction();
 
-    $count = $action();
+    $count = $action->handle();
 
     expect($count)->toBeInt();
 });
@@ -83,7 +83,7 @@ it('caches with correct key name', function () {
     WaitlistSignupFactory::times(3)->create();
 
     $action = new CountWaitlistSignupsAction();
-    $action();
+    $action->handle();
 
     expect(Cache::has('waitlistSignupsCount'))->toBeTrue();
 });
@@ -93,7 +93,7 @@ it('cache expires after one week', function () {
     WaitlistSignupFactory::times(2)->create();
 
     $action = new CountWaitlistSignupsAction();
-    $action();
+    $action->handle();
 
     expect(Cache::has('waitlistSignupsCount'))->toBeTrue();
 

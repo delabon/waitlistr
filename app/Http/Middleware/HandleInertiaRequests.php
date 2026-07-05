@@ -56,7 +56,7 @@ final class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'signupsCount' => fn () => Number::forHumans(
-                number: ($this->countWaitlistSignupsAction)(),
+                number: $this->countWaitlistSignupsAction->handle(),
                 abbreviate: true
             ),
         ];

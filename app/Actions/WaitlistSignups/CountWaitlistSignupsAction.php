@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Cache;
 
 final class CountWaitlistSignupsAction
 {
-    public function __invoke(): int
+    public function handle(): int
     {
         /** @phpstan-ignore cast.int */
         return (int) Cache::remember(
