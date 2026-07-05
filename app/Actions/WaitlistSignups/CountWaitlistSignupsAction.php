@@ -14,7 +14,7 @@ final class CountWaitlistSignupsAction
         $count = Cache::remember(
             'waitlistSignupsCount',
             now()->addWeek(),
-            static fn () => WaitlistSignup::query()->count()
+            static fn (): int => WaitlistSignup::query()->count()
         );
 
         return (int) $count;
