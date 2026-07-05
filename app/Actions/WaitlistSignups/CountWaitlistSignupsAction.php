@@ -17,6 +17,6 @@ final class CountWaitlistSignupsAction
             static fn () => WaitlistSignup::query()->count()
         );
 
-        return intval($count);
+        return (int) $count;
     }
 }
