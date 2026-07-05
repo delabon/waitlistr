@@ -12,7 +12,7 @@ use Illuminate\Contracts\Support\Arrayable;
  */
 final readonly class WaitlistSignupDTO implements Arrayable
 {
-    public function __construct(
+    private function __construct(
         public ?string $firstName,
         public ?string $lastName,
         public string $email
@@ -32,7 +32,6 @@ final readonly class WaitlistSignupDTO implements Arrayable
 
     public static function fromModel(WaitlistSignup $waitlistSignup): self
     {
-        /** @phpstan-ignore argument.type */
         return self::fromArray($waitlistSignup->toArray());
     }
 

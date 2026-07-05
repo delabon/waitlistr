@@ -9,13 +9,12 @@ use Illuminate\Support\Facades\Cache;
 
 final class CountWaitlistSignupsAction
 {
-    public function __invoke(): int
+    public function handle(): int
     {
-        /** @phpstan-ignore cast.int */
-        return (int) Cache::remember(
+        return Cache::remember(
             'waitlistSignupsCount',
             now()->addWeek(),
-            static fn () => WaitlistSignup::query()->count()
+            static fn (): int => WaitlistSignup::query()->count()
         );
     }
 }

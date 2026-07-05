@@ -13,7 +13,7 @@ it('returns paginated signups ordered by latest id', function () {
 
     $action = new PaginateWaitlistSignupsAction();
 
-    $result = $action();
+    $result = $action->handle();
 
     expect($result)->toBeInstanceOf(LengthAwarePaginator::class);
     expect($result->items())->toHaveCount(3);
@@ -27,7 +27,7 @@ it('paginates with default 10 items per page', function () {
 
     $action = new PaginateWaitlistSignupsAction();
 
-    $result = $action();
+    $result = $action->handle();
 
     expect($result->perPage())->toBe(10);
     expect($result->items())->toHaveCount(10);
@@ -40,7 +40,7 @@ it('accepts custom items per page parameter', function () {
 
     $action = new PaginateWaitlistSignupsAction();
 
-    $result = $action(maxItemsPerPage: 5);
+    $result = $action->handle(maxItemsPerPage: 5);
 
     expect($result->perPage())->toBe(5);
     expect($result->items())->toHaveCount(5);
@@ -51,7 +51,7 @@ it('accepts custom items per page parameter', function () {
 it('returns empty paginator when no signups exist', function () {
     $action = new PaginateWaitlistSignupsAction();
 
-    $result = $action();
+    $result = $action->handle();
 
     expect($result)->toBeInstanceOf(LengthAwarePaginator::class);
     expect($result->items())->toHaveCount(0);
@@ -63,7 +63,7 @@ it('handles single signup correctly', function () {
 
     $action = new PaginateWaitlistSignupsAction();
 
-    $result = $action();
+    $result = $action->handle();
 
     expect($result->items())->toHaveCount(1);
     expect($result->items()[0]->id)->toBe($onlySignup->id);
@@ -75,7 +75,7 @@ it('returns correct pagination metadata', function () {
 
     $action = new PaginateWaitlistSignupsAction();
 
-    $result = $action(maxItemsPerPage: 10);
+    $result = $action->handle(maxItemsPerPage: 10);
 
     expect($result->currentPage())->toBe(1);
     expect($result->hasMorePages())->toBeTrue();

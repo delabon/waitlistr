@@ -15,15 +15,15 @@ beforeEach(function () {
 });
 
 it('creates waitlist signup from DTO', function () {
-    $dto = new WaitlistSignupDTO(
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com'
-    );
+    $dto = WaitlistSignupDTO::fromArray([
+        'firstName' => 'John',
+        'lastName' => 'Doe',
+        'email' => 'john.doe@example.com',
+    ]);
 
     $action = new StoreWaitlistSignupAction();
 
-    $result = $action($dto);
+    $result = $action->handle($dto);
 
     expect($result)->toBeInstanceOf(WaitlistSignup::class);
     expect($result->first_name)->toBe('John');
@@ -40,15 +40,15 @@ it('creates waitlist signup from DTO', function () {
 });
 
 it('dispatches WaitlistSignupCreated event', function () {
-    $dto = new WaitlistSignupDTO(
-        firstName: 'Alice',
-        lastName: 'Johnson',
-        email: 'alice.johnson@example.com'
-    );
+    $dto = WaitlistSignupDTO::fromArray([
+        'firstName' => 'Alice',
+        'lastName' => 'Johnson',
+        'email' => 'alice.johnson@example.com',
+    ]);
 
     $action = new StoreWaitlistSignupAction();
 
-    $result = $action($dto);
+    $result = $action->handle($dto);
 
     Event::assertDispatched(WaitlistSignupCreated::class, function ($event) use ($result) {
         return $event->waitlistSignup->id === $result->id
@@ -60,29 +60,29 @@ it('clears waitlistSignupsCount cache', function () {
     Cache::put('waitlistSignupsCount', 42);
     expect(Cache::has('waitlistSignupsCount'))->toBeTrue();
 
-    $dto = new WaitlistSignupDTO(
-        firstName: 'Bob',
-        lastName: 'Wilson',
-        email: 'bob.wilson@example.com'
-    );
+    $dto = WaitlistSignupDTO::fromArray([
+        'firstName' => 'Bob',
+        'lastName' => 'Wilson',
+        'email' => 'bob.wilson@example.com',
+    ]);
 
     $action = new StoreWaitlistSignupAction();
 
-    $action($dto);
+    $action->handle($dto);
 
     expect(Cache::has('waitlistSignupsCount'))->toBeFalse();
 });
 
 it('handles signup with only email and no names', function () {
-    $dto = new WaitlistSignupDTO(
-        firstName: null,
-        lastName: null,
-        email: 'noname@example.com'
-    );
+    $dto = WaitlistSignupDTO::fromArray([
+        'firstName' => null,
+        'lastName' => null,
+        'email' => 'noname@example.com',
+    ]);
 
     $action = new StoreWaitlistSignupAction();
 
-    $result = $action($dto);
+    $result = $action->handle($dto);
 
     expect($result->first_name)->toBeNull();
     expect($result->last_name)->toBeNull();
@@ -97,15 +97,15 @@ it('handles signup with only email and no names', function () {
 });
 
 it('handles signup with only first name', function () {
-    $dto = new WaitlistSignupDTO(
-        firstName: 'Charlie',
-        lastName: null,
-        email: 'charlie@example.com'
-    );
+    $dto = WaitlistSignupDTO::fromArray([
+        'firstName' => 'Charlie',
+        'lastName' => null,
+        'email' => 'charlie@example.com',
+    ]);
 
     $action = new StoreWaitlistSignupAction();
 
-    $result = $action($dto);
+    $result = $action->handle($dto);
 
     expect($result->first_name)->toBe('Charlie');
     expect($result->last_name)->toBeNull();
@@ -113,15 +113,15 @@ it('handles signup with only first name', function () {
 });
 
 it('returns created model with all attributes', function () {
-    $dto = new WaitlistSignupDTO(
-        firstName: 'David',
-        lastName: 'Brown',
-        email: 'david.brown@example.com'
-    );
+    $dto = WaitlistSignupDTO::fromArray([
+        'firstName' => 'David',
+        'lastName' => 'Brown',
+        'email' => 'david.brown@example.com',
+    ]);
 
     $action = new StoreWaitlistSignupAction();
 
-    $result = $action($dto);
+    $result = $action->handle($dto);
 
     expect($result)->toBeInstanceOf(WaitlistSignup::class);
     expect($result->exists)->toBeTrue();

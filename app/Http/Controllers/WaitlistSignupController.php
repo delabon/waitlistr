@@ -18,7 +18,7 @@ final class WaitlistSignupController extends Controller
 
     public function index(PaginateWaitlistSignupsAction $action): Response
     {
-        $waitlistSignups = $action(self::MAX_ITEMS_PER_PAGE);
+        $waitlistSignups = $action->handle(self::MAX_ITEMS_PER_PAGE);
 
         return Inertia::render('dashboard/admin/Signups', [
             'waitlistSignups' => WaitlistSignupResource::collection($waitlistSignups),
@@ -34,7 +34,7 @@ final class WaitlistSignupController extends Controller
         StoreWaitlistSignupRequest $request,
         StoreWaitlistSignupAction $action
     ): RedirectResponse {
-        $action($request->toDto());
+        $action->handle($request->toDto());
 
         return back();
     }

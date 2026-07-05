@@ -12,7 +12,7 @@ final class PaginateWaitlistSignupsAction
     /**
      * @return LengthAwarePaginator<int, WaitlistSignup>
      */
-    public function __invoke(int $maxItemsPerPage = 10): LengthAwarePaginator
+    public function handle(int $maxItemsPerPage = 10): LengthAwarePaginator
     {
         return WaitlistSignup::query()
             ->latest('id')
