@@ -11,10 +11,12 @@ final class CountWaitlistSignupsAction
 {
     public function handle(): int
     {
-        return (int) Cache::remember(
+        $count = Cache::remember(
             'waitlistSignupsCount',
             now()->addWeek(),
             static fn () => WaitlistSignup::query()->count()
         );
+
+        return intval($count);
     }
 }
